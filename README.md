@@ -4,7 +4,7 @@ As time goes on I expect the nix configuration here will become more complex and
 
 This Sway, Waybar, and Mako config here is effectively a tweaked version of https://github.com/arkboix/sway and was based on the dotfiles there.
 
-I don't intend for others to install this or use this as a base, but feel free to do so, and you can look in my configuration.nix to see what packages are pulled in by sway to see what packages I have used for the wm setup.
+I didn't intend for others to install this or use this as a base, but feel free to do so, and you can look in my configuration.nix to see what packages are pulled in by sway to see what packages I have used for the wm setup.
 
 ![Example image with a fetch script displayed](https://github.com/BrianZasuwik/nixos-config/blob/main/250424_00-15-31.png)
 
