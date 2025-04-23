@@ -139,7 +139,7 @@ in
   users.users.bzas = {
     isNormalUser = true;
     description = "Brian Zasuwik";
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" "usb" "plugdev" "kvm" "users" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" "usb" "plugdev" "kvm" "users" "vboxusers" ];
     packages = with pkgs; [];
   };
 
