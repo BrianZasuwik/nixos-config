@@ -81,6 +81,10 @@ in
     ];
   };
 
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+  };
+
   programs.waybar.enable = true;
 
   programs.light.enable = true;
@@ -166,8 +170,9 @@ in
       programs.vscode = {
         enable = true;
         extensions = with pkgs.vscode-extensions; [
-        ms-python.python
-        ecmel.vscode-html-css
+          bbenoist.nix
+          ms-python.python
+          ecmel.vscode-html-css
         ];
       };
 
