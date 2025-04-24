@@ -11,6 +11,15 @@
   # Define hostname
   networking.hostName = "boreas";
 
+  # Configure keymap in X11
+  services.xserver.xkb = {
+    layout = "gb";
+    variant = "";
+  };
+
+  # Configure console keymap
+  console.keyMap = "uk";
+
   # Bluetooth
   hardware.bluetooth = {
     enable = true;
@@ -20,6 +29,7 @@
   # Graphics Settings
   hardware.graphics = {
     enable = true;
+    enable32Bit = true;
   };
 
   services.xserver.videoDrivers = ["nvidia"];
