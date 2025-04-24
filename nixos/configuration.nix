@@ -10,14 +10,11 @@ let
 in
 {
   imports =
-    [ # Include the results of the hardware scan.
-      /etc/nixos/hardware-configuration.nix
+    [
+      /etc/nixos/hardware-configuration.nix # Include the results of the hardware scan.
+      /etc/nixos/device-configuration.nix # Include the device specific config (hardware configuration other than scan results)
       (import "${home-manager}/nixos")
     ];
-
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
 
   # Enable networking
   networking.networkmanager.enable = true;
