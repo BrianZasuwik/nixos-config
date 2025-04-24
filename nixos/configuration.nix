@@ -41,6 +41,11 @@ in
     enable = false;
   };
 
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
+
   powerManagement.enable = true;
 
   services.gnome.gnome-keyring.enable = true;

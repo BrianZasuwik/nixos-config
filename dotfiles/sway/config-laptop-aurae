@@ -1,0 +1,33 @@
+### Output configuration
+# You can get outputs by running: swaymsg -t get_ouputs
+# Display Configuration
+output LVDS-1 resolution 1280x800 position 0,0
+
+### Input configuration
+# You can inputs by running: swaymsg -t get_inputs
+#Keyboard Layout
+input * {
+	xkb_layout "gb"
+}
+input "1:1:AT_Translated_Set_2_keyboard" {
+	xkb_layout "pt"
+	xkb_variant "nodeadkeys"
+}
+input "0:0:Toshiba_input_device" {
+	xkb_layout "pt"
+	xkb_variant "nodeadkeys"
+}
+input "0:1:Power_Button" {
+	xkb_layout "pt"
+	xkb_variant "nodeadkeys"
+}
+input "0:6:Video_Bus" {
+	xkb_layout "pt"
+	xkb_variant "nodeadkeys"
+}
+input "2:7:SynPS/2_Synaptics_TouchPad" {
+	tap enabled
+	dwt enabled
+	natural_scroll enabled
+	middle_emulation enabled
+}
