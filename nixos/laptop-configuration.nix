@@ -1,5 +1,5 @@
 # Configuration specific to the device it's on. Link into place so it can be imported by configuration.nix as device-configuration.nix
-# Bootloader is here because I have one laptop that is not EFI compatible that I would like to also have my nixos config on.
+# Bootloader is here because I have one laptop that is not UEFI that I would like to also have my nixos config on.
 
 { config, pkgs, ... }:
 
