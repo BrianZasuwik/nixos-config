@@ -6,6 +6,8 @@
 
 let
   home-manager = builtins.fetchTarball https://github.com/nix-community/home-manager/archive/release-24.11.tar.gz;
+  user = "bzas"; # Change to your username
+  name = "Brian Zasuwik"; # Change to your name
   #unstableTarball = builtins.fetchTarball https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
 in
 {
@@ -49,11 +51,12 @@ in
   powerManagement.enable = true;
 
   services.gnome.gnome-keyring.enable = true;
-
   services.gvfs.enable = true;
 
+  # Display Manager (ly)
   services.displayManager.ly.enable = true;
 
+  # Window Manager (Sway)
   programs.sway = {
     enable = true;
     package = pkgs.swayfx;
@@ -120,9 +123,9 @@ in
 
   services.syncthing = {
     enable = true;
-    user = "bzas";
-    dataDir = "/home/bzas";
-    configDir = "/home/bzas/.config/syncthing";
+    user = "${user}";
+    dataDir = "/home/${user}";
+    configDir = "/home/${user}/.config/syncthing";
     guiAddress = "127.0.0.1:8384";
   };
 
@@ -133,9 +136,9 @@ in
   security.polkit.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.bzas = {
+  users.users.${user} = {
     isNormalUser = true;
-    description = "Brian Zasuwik";
+    description = "${name}";
     extraGroups = [ "networkmanager" "wheel" "video" "audio" "usb" "plugdev" "kvm" "users" "vboxusers" ];
     packages = with pkgs; [];
   };
@@ -143,10 +146,10 @@ in
   qt.style = "adwaita-dark";
 
   home-manager = {
-    users.bzas = { pkgs, ... }: {
+    users.${user} = { pkgs, ... }: {
 
-      home.username = "bzas";
-      home.homeDirectory = "/home/bzas";
+      home.username = "${user}";
+      home.homeDirectory = "/home/${user}";
 
       home.packages = with pkgs; [
         discord
@@ -169,7 +172,13 @@ in
         ];
       };
 
-      services.poweralertd.enable = true;
+      xdg.configFile."sway/config".source = "/home/${user}/nixos-config/dotfiles/sway/config";
+      xdg.configFile."waybar/style.css".source = "/home/${user}/nixos-config/dotfiles/waybar/style.css";
+      xdg.configFile."waybar/config.jsonc".source = "/home/${user}/nixos-config/dotfiles/waybar/config.jsonc";
+      xdg.configFile."mako/config".source = "/home/${user}/nixos-config/dotfiles/mako/config";
+      xdg.configFile."wofi/style.css".source = "/home/${user}/nixos-config/dotfiles/wofi/style.css";
+      xdg.configFile."xfce/helpers.rc".source = "/home/${user}/nixos-config/dotfiles/xfce4/helpers.rc";
+      xdg.configFile."kitty/kitty.conf".source = "/home/${user}/nixos-config/dotfiles/kitty/kitty.conf";
 
       gtk = {
         enable = true;

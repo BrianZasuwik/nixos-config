@@ -2,6 +2,10 @@
 
 { config, pkgs, ... }:
 
+let
+  user = "bzas"; # Change to your username
+  sway-hardware-config = "/home/${user}/nixos-config/dotfiles/sway/config-laptop-aurae";
+in
 {
   # Bootloader
   boot.loader.grub.enable = true;
@@ -12,6 +16,13 @@
   services.xserver.xkb = {
     layout = "pt";
     variant = "nodeadkeys";
+  };
+
+  # Device specific config files
+  home-manager = {
+    users.${user} = { pkgs, ... }: {
+      xdg.configFile."sway/hardware-config".source = "${sway-hardware-config}";
+    };
   };
 
   # Configure console keymap
