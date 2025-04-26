@@ -5,7 +5,7 @@
 
 let
   user = "bzas"; # Change to your username
-  sway-hardware-config = "/home/${user}/nixos-config/dotfiles/sway/config-laptop-boreas";
+  #sway-hardware-config = "/home/${user}/nixos-config/dotfiles/sway/config-laptop-boreas";
 in
 {
   # Bootloader
@@ -24,7 +24,27 @@ in
   # Device specific config files
   home-manager = {
     users.${user} = { pkgs, ... }: {
-      xdg.configFile."sway/hardware-config".source = "${sway-hardware-config}";
+      #xdg.configFile."sway/hardware-config".source = "${sway-hardware-config}";
+      wayland.windowManager.sway = {
+        config = {
+          output = {
+            eDP-1 = {
+              resolution = "1920x1080 position 0,0";
+            };
+          };
+          input = {
+            "*" = {
+              xkb_layout = "gb";
+            };
+            "2:7:SynPS/2_Synaptics_TouchPad" = {
+              tap = "enabled";
+              dwt = "enabled";
+              natural_scroll = "enabled";
+              middle_emulation = "enabled";
+            };
+          };
+        };
+      };
     };
   };
 
