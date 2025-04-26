@@ -4,7 +4,7 @@
 
 let
   user = "bzas"; # Change to your username
-  sway-hardware-config = "/home/${user}/nixos-config/dotfiles/sway/config-laptop-aurae";
+  #sway-hardware-config = "/home/${user}/nixos-config/dotfiles/sway/config-laptop-aurae";
 in
 {
   # Bootloader
@@ -21,7 +21,43 @@ in
   # Device specific config files
   home-manager = {
     users.${user} = { pkgs, ... }: {
-      xdg.configFile."sway/hardware-config".source = "${sway-hardware-config}";
+      #xdg.configFile."sway/hardware-config".source = "${sway-hardware-config}";
+      wayland.windowManager.sway = {
+        config = {
+          output = {
+            LVDS-1 = {
+              resolution = "1280x800 position 0,0";
+            };
+          };
+          input = {
+            "*" = {
+              xkb_layout = "gb";
+            };
+            "1:1:AT_Translated_Set_2_keyboard" = {
+              xkb_layout = "pt";
+              xkb_variant = "nodeadkeys";
+            };
+            "0:0:Toshiba_input_device" = {
+              xkb_layout = "pt";
+              xkb_variant = "nodeadkeys";
+            };
+            "0:1:Power_Button" = {
+              xkb_layout = "pt";
+              xkb_variant = "nodeadkeys";
+            };
+            "0:6:Video_Bus" = {
+              xkb_layout = "pt";
+              xkb_variant = "nodeadkeys";
+            };
+            "2:7:SynPS/2_Synaptics_TouchPad" = {
+              tap = "enabled";
+              dwt = "enabled";
+              natural_scroll = "enabled";
+              middle_emulation = "enabled";
+            };
+          };
+        };
+      };
     };
   };
 
