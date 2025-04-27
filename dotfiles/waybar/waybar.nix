@@ -186,8 +186,8 @@ in
             "backlight" = {
               format = "{icon} {percent}%";
               format-icons = [ "󰃞" "󰃟" "󰃠" ];
-              on-scroll-up = "brightnessctl set +5%";
-              on-scroll-down = "brightnessctl set 5%-";
+              on-scroll-up = "brightnessctl set +2%";
+              on-scroll-down = "brightnessctl set 2%-";
             };
             "disk" = {
               interval = 30;

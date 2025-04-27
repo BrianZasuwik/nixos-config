@@ -74,6 +74,7 @@ in
         grim
         slurp
         swaybg
+        swayidle
         wl-clipboard
         gdu
         btop
@@ -270,8 +271,8 @@ in
             "${modifier}+r" = "mode resize";
 
             # Brightness Control
-            "XF86MonBrightnessDown" = "exec brightnessctl set 2%-";
-            "XF86MonBrightnessUp" = "exec brightnessctl set +2%";
+            "XF86MonBrightnessDown" = "exec brightnessctl set 5%-";
+            "XF86MonBrightnessUp" = "exec brightnessctl set +5%";
 
             # Volume Controls
             "XF86AudioRaiseVolume" = "exec 'pactl set-sink-volume @DEFAULT_SINK@ +1%'";
@@ -336,8 +337,8 @@ in
         dim_inactive_colors.urgent #900000FF
         ";
 
-        # exec swayidle -w \ timeout 600 'swaymsg \"output * power off\"' resume 'swaymsg \"output * power on\"' \ 
         extraConfig = "
+
         exec mako
 
         exec wl-paste --type text --watch cliphist store &
@@ -346,6 +347,8 @@ in
         include /etc/sway/config.d/*
         ";
       };
+
+      # exec ${pkgs.swayidle}/bin/swayidle -w \ timeout 5 '${pkgs.brightnessctl}/bin/brightnessctl set 5% -s' resume '${pkgs.brightnessctl}/bin/brightnessctl -r' \ timeout 10 '${pkgs.swayfx}/bin/swaymsg \"output * power off\"' resume '${pkgs.swayfx}/bin/swaymsg \"output * power on\"'
 
       ### swayidle configuration:
       services.swayidle = {
@@ -356,9 +359,14 @@ in
         ];
         timeouts = [
           {
-            timeout = 5;
-            command = "swagmsg 'output * power off'";
-            resumeCommand = "swaymsg 'output * power on'";
+            timeout = 300;
+            command = "/run/current-system/sw/bin/brightnessctl set 5% -s";
+            resumeCommand = "/run/current-system/sw/bin/brightnessctl -r";
+          }
+          {
+            timeout = 600;
+            command = "${pkgs.swayfx}/bin/swaymsg 'output * power off'";
+            resumeCommand = "${pkgs.swayfx}/bin/swaymsg 'output * power on'";
           }
         ];
       };
