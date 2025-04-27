@@ -5,7 +5,6 @@
 
 let
   user = "bzas"; # Change to your username
-  #sway-hardware-config = "/home/${user}/nixos-config/dotfiles/sway/config-laptop-boreas";
 in
 {
   # Bootloader
@@ -24,7 +23,6 @@ in
   # Device specific config files
   home-manager = {
     users.${user} = { pkgs, ... }: {
-      #xdg.configFile."sway/hardware-config".source = "${sway-hardware-config}";
       wayland.windowManager.sway = {
         config = {
           output = {

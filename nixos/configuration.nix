@@ -131,7 +131,10 @@ in
     jack.enable = true;
   };
 
+  programs.dconf.enable = true;
+
   xdg.autostart.enable = true;
+
   xdg.portal = {
     enable = true;
     wlr.enable = true;
@@ -171,7 +174,19 @@ in
   qt.style = "adwaita-dark";
 
   home-manager = {
-    users.${user} = { pkgs, ... }: {
+    users.${user} = { pkgs, lib, ... }: 
+    let
+      # Navigation keys
+      up = "i";
+      left = "j";
+      down = "k";
+      right = "l";
+
+      # Sway basic apps
+      modifier = "Mod4";
+      terminal = "kitty";
+      menu = "dmenu_path | wofi --allow-images --show=drun | xargs swaymsg exec --";
+    in {
 
       home.username = "${user}";
       home.homeDirectory = "/home/${user}";
@@ -204,6 +219,11 @@ in
       # Based on sway config by https://github.com/arkboix
       # Found here: https://github.com/arkboix/sway/
       wayland.windowManager.sway = {
+        checkConfig = false;
+        # Used to bypass an error in SwayFX that causes a build failure, see terminal output below:
+          # 00:00:00.001 [wlr] [render/fx_renderer/fx_renderer.c:601] Cannot create GLES2 renderer: no DRM FD available
+          # 00:00:00.001 [sway/server.c:150] Failed to create fx_renderer
+
         enable = true;
         package = pkgs.swayfx;
         wrapperFeatures = {
@@ -213,9 +233,9 @@ in
         xwayland = true;
         extraOptions = [ "--unsupported-gpu" ];
         config = {
-          terminal = "kitty";
-          menu = "dmenu_path | wofi --allow-images --show=drun | xargs swaymsg exec --";
-          modifier = "Mod4";
+          terminal = "${terminal}";
+          menu = "${menu}";
+          modifier = "${modifier}";
 
           focus = {
             followMouse = true;
@@ -224,7 +244,7 @@ in
 
           bars = [
             {
-              command = waybar;
+              command = "waybar";
             }
           ];
 
@@ -234,10 +254,10 @@ in
 
           # I'm not a vim user, so I'd like my navigation
           # keys to be in a navigation-y shape.
-          up = "i";
-          down = "k";
-          left = "j";
-          right = "l";
+          up = "${up}";
+          down = "${down}";
+          left = "${left}";
+          right = "${right}";
 
           window = {
             border = 2;
@@ -275,15 +295,7 @@ in
             titlebar = true;
           };
 
-          keybindings = let
-            modifier = config.wayland.windowManager.sway.config.modifier;
-            terminal = config.wayland.windowManager.sway.config.terminal;
-            menu = config.wayland.windowManager.sway.config.menu;
-            up = config.wayland.windowManager.sway.config.up;
-            down = config.wayland.windowManager.sway.config.down;
-            left = config.wayland.windowManager.sway.config.left;
-            right = config.wayland.windowManager.sway.config.right;
-          in lib.mkOptionDefault {
+          keybindings = with lib; lib.mkOptionDefault {
             # Start a terminal
             "${modifier}+Return" = "exec ${terminal}";
             "${modifier}+F1" = "exec ${terminal}";
@@ -430,34 +442,34 @@ in
               bg = "/home/${user}/nixos-config/wallpapers/${wallpaper}";
             };
           };
-
-          extraConfigEarly = "
-          corner_radius 10
-
-          blur on
-          blue_xray off
-          blue_passes 2
-          blur_radius 5
-          
-          shadows on
-          shadows_on_csd off
-          shadow_blue_radius 20
-          shadow_color #0000007F
-          
-          default_dim_inactive 0.0
-          dim_inactive_colors.unfocused #000000FF
-          dim_inactive_colors.urgent #900000FF
-          ";
-
-          extraConfig = "
-          exec mako
-
-          exec wl-paste --type text --watch cliphist store &
-          exec wl-paste --type image --watch cliphist store &
-
-          include /etc/sway/config.d/*
-          ";
         };
+
+        extraConfigEarly = "
+        corner_radius 10
+
+        blur on
+        blue_xray off
+        blue_passes 2
+        blur_radius 5
+          
+        shadows on
+        shadows_on_csd off
+        shadow_blue_radius 20
+        shadow_color #0000007F
+          
+        default_dim_inactive 0.0
+        dim_inactive_colors.unfocused #000000FF
+        dim_inactive_colors.urgent #900000FF
+        ";
+
+        extraConfig = "
+        exec mako
+
+        exec wl-paste --type text --watch cliphist store &
+        exec wl-paste --type image --watch cliphist store &
+
+        include /etc/sway/config.d/*
+        ";
       };
 
       ### swayidle configuration:
@@ -528,7 +540,7 @@ window {
 #entry:selected #text {
     font-weight: bold;
 }
-"
+";
       };
 
       ### waybar configuration:
@@ -747,7 +759,7 @@ window {
     /* Base styling for all modules */
     border: none;
     border-radius: 0;
-    font-family: "Iosevka Nerd Font";
+    font-family: \"Iosevka Nerd Font\";
     font-size: 14px;
     min-height: 0;
 }
@@ -960,7 +972,7 @@ window#waybar {
     color: ${red};
     border-bottom-color: ${red};
 }
-"
+";
       };
 
       ### mako configuration:
@@ -972,18 +984,18 @@ window#waybar {
         sort = "-time";
         layer = "overlay";
         anchor = "top-right";
-        background-color = "${background}";
+        backgroundColor = "${background}";
         width = 300;
         height = 110;
-        margin = 5;
+        margin = "5";
         padding = "0,5,10";
-        border-size = 2;
-        border-color = "${border}";
-        border-radius = 10;
+        borderSize = 2;
+        borderColor = "${border}";
+        borderRadius = 10;
         icons = true;
-        max-icon-size = 64;
-        default-timeout = 5000;
-        ignore-timeout = true;
+        maxIconSize = 64;
+        defaultTimeout = 5000;
+        ignoreTimeout = true;
         extraConfig = "
 [urgency=high]
 border-color=${crimson}
@@ -991,7 +1003,7 @@ default-timeout=0
 
 [summary~=\"log-.*\"]
 border-color=${red}
-"
+";
       };
 
       ### Kitty configuration:
