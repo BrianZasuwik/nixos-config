@@ -360,13 +360,13 @@ in
         timeouts = [
           {
             timeout = 300;
-            command = "/run/current-system/sw/bin/brightnessctl set 5% -s";
-            resumeCommand = "/run/current-system/sw/bin/brightnessctl -r";
+            command = "/run/current-system/sw/bin/brightnessctl set 0 -d tpacpi::kbd_backlight -s && /run/current-system/sw/bin/brightnessctl set 5% -s";
+            resumeCommand = "/run/current-system/sw/bin/brightnessctl set 0 -d tpacpi::kbd_backlight -s && /run/current-system/sw/bin/brightnessctl -r";
           }
           {
             timeout = 600;
-            command = "${pkgs.swayfx}/bin/swaymsg 'output * power off'";
-            resumeCommand = "${pkgs.swayfx}/bin/swaymsg 'output * power on'";
+            command = "/run/current-system/sw/bin/brightnessctl set 0 -d tpacpi::kbd_backlight -s && ${pkgs.swayfx}/bin/swaymsg 'output * power off'";
+            resumeCommand = "/run/current-system/sw/bin/brightnessctl -d tpacpi::kbd_backlight -r && ${pkgs.swayfx}/bin/swaymsg 'output * power on'";
           }
         ];
       };
