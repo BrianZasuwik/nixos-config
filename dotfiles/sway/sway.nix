@@ -174,6 +174,14 @@ in
           floating = {
             border = 2;
             titlebar = true;
+            criteria = [
+              { title = "Volume Control"; }
+              { title = "Bluetooth Devices"; }
+              { app_id = "org.pulseaudio.pavucontrol"; }
+              { title = "Steam Settings"; }
+              { title = "Friends List"; }
+              { app_id = "yad"; }
+            ];
           };
 
           keybindings = with lib; lib.mkOptionDefault {
