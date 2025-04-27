@@ -365,7 +365,7 @@ in
           }
           {
             timeout = 600;
-            command = "/run/current-system/sw/bin/brightnessctl set 0 -d tpacpi::kbd_backlight -s && ${pkgs.swayfx}/bin/swaymsg 'output * power off'";
+            command = "${pkgs.swayfx}/bin/swaymsg 'output * power off'";
             resumeCommand = "/run/current-system/sw/bin/brightnessctl -d tpacpi::kbd_backlight -r && ${pkgs.swayfx}/bin/swaymsg 'output * power on'";
           }
         ];
