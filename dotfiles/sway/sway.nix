@@ -141,7 +141,13 @@ in
               {
                 command = "foating enable, move position center, resize 600 400";
                 criteria = {
-                  app_id = "org.pulseaudio.pavucontrol";
+                  title = "Volume Control";
+                };
+              }
+              {
+                command = "foating enable, move position center, resize 600 400";
+                criteria = {
+                  title = "Bluetooth Devices";
                 };
               }
               {
