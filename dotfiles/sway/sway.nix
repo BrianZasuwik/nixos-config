@@ -361,7 +361,7 @@ in
           {
             timeout = 300;
             command = "/run/current-system/sw/bin/brightnessctl set 0 -d tpacpi::kbd_backlight -s && /run/current-system/sw/bin/brightnessctl set 5% -s";
-            resumeCommand = "/run/current-system/sw/bin/brightnessctl set 0 -d tpacpi::kbd_backlight -s && /run/current-system/sw/bin/brightnessctl -r";
+            resumeCommand = "/run/current-system/sw/bin/brightnessctl -d tpacpi::kbd_backlight -r && /run/current-system/sw/bin/brightnessctl -r";
           }
           {
             timeout = 600;
