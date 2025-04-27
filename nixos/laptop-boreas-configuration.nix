@@ -20,7 +20,17 @@ in
     variant = "";
   };
 
-  # Device specific config files
+  # Power management
+  services.thermald.enable = true;
+  services.tlp = {
+    enable = true;
+    settings = {
+      START_CHARGE_THRESH_BAT0 = 40;
+      STOP_CHARGE_THRESH_BAT0 = 80;
+    };
+  };
+
+  # Device specific home-manager configs
   home-manager = {
     users.${user} = { pkgs, ... }: {
       wayland.windowManager.sway = {

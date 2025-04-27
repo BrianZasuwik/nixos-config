@@ -136,6 +136,8 @@ alias sway='sway --unsupported-gpu'
 ";
       };
 
+      services.poweralertd.enable = true;
+
       services.playerctld.enable = true;
 
       ### Kitty configuration:

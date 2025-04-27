@@ -17,6 +17,9 @@ in
     variant = "nodeadkeys";
   };
 
+  # Power management
+  services.thermald.enable = true;
+
   # Device specific config files
   home-manager = {
     users.${user} = { pkgs, ... }: {
