@@ -77,9 +77,6 @@ in
   services.gnome.gnome-keyring.enable = true;
   services.gvfs.enable = true;
 
-  # Display Manager (ly)
-  services.displayManager.ly.enable = true;
-
 ### Now managed by home-manager
 #  # Window Manager (Sway)
 #  programs.sway = {
@@ -115,8 +112,6 @@ in
     NIXOS_OZONE_WL = "1";
   };
 
-  programs.waybar.enable = true;
-
   programs.light.enable = true;
 
   programs.git.enable = true;
@@ -133,11 +128,17 @@ in
 
   programs.dconf.enable = true;
 
-  xdg.autostart.enable = true;
-
   xdg.portal = {
     enable = true;
-    wlr.enable = true;
+    configPackages = [
+      pkgs.xdg-desktop-portal-wlr
+      pkgs.gnome-session
+    ];
+    config = {
+      common = {
+        default = [ "wlr" "gtk" ];
+      };
+    };
   };
 
   services.flatpak.enable = true;
@@ -202,6 +203,7 @@ in
         filezilla
         vlc
         # Packages for wm:
+        dconf
         brightnessctl
         grim
         slurp
@@ -211,7 +213,17 @@ in
         btop
         pavucontrol
       ];
-      programs.bash.enable = true;
+      programs.bash = {
+        enable = true;
+        bashrcExtra = "
+        if [ \"$(tty)\" = \"/dev/tty1\" ]; then
+          dbus-run-session sway --unsupported-gpu
+        else
+          fastfetch
+        fi
+        alias sway='dbus-run-session sway --unsupported-gpu'
+        ";
+      };
 
       services.playerctld.enable = true;
 
@@ -233,6 +245,8 @@ in
         xwayland = true;
         extraOptions = [ "--unsupported-gpu" ];
         config = {
+          defaultWorkspace = "workspace number 1";
+
           terminal = "${terminal}";
           menu = "${menu}";
           modifier = "${modifier}";
@@ -252,8 +266,6 @@ in
             inner = 10;
           };
 
-          # I'm not a vim user, so I'd like my navigation
-          # keys to be in a navigation-y shape.
           up = "${up}";
           down = "${down}";
           left = "${left}";
@@ -439,7 +451,7 @@ in
 
           output = {
             "*" = {
-              bg = "/home/${user}/nixos-config/wallpapers/${wallpaper}";
+              bg = "/home/${user}/nixos-config/wallpapers/${wallpaper} fill";
             };
           };
         };
@@ -448,13 +460,13 @@ in
         corner_radius 10
 
         blur on
-        blue_xray off
-        blue_passes 2
+        blur_xray off
+        blur_passes 2
         blur_radius 5
           
         shadows on
         shadows_on_csd off
-        shadow_blue_radius 20
+        shadow_blur_radius 20
         shadow_color #0000007F
           
         default_dim_inactive 0.0
@@ -548,6 +560,10 @@ window {
       # Found here: https://github.com/arkboix/sway/
       programs.waybar = {
         enable = true;
+        systemd = {
+          enable = false;
+          target = "sway-session.target";
+        };
         settings = {
           mainBar = {
             layer = "top";
