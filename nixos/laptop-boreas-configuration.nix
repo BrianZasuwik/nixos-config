@@ -56,7 +56,7 @@ in
   };
 
   # Graphics Settings
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "intel" "nvidia" ];
   
   hardware.nvidia = {
     package = config.boot.kernelPackages.nvidiaPackages.latest;
