@@ -58,47 +58,14 @@ in
     enable32Bit = true;
   };
 
+  ### Display manager (ly)
+  services.displayManager.ly.enable = true;
+
   powerManagement.enable = true;
 
+  programs.dconf.enable = true;
   services.gnome.gnome-keyring.enable = true;
   services.gvfs.enable = true;
-
-### Now managed by home-manager
-#  # Window Manager (Sway)
-#  programs.sway = {
-#    enable = true;
-#    package = pkgs.swayfx;
-#    wrapperFeatures = {
-#      base = true;
-#      gtk = true;
-#    };
-#    xwayland.enable = true;
-#    extraPackages = with pkgs; [
-#      brightnessctl
-#      kitty
-#      grim
-#      slurp
-#      pulseaudio
-#      swayidle
-#      swaylock
-#      wofi
-#      swaybg
-#      wl-clipboard
-#      mako
-#      gdu
-#      btop
-#      pavucontrol
-#    ];
-#    extraOptions = [
-#      "--unsupported-gpu"
-#    ];
-#  };
-
-  environment.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
-  };
-
-  programs.light.enable = true;
 
   programs.git.enable = true;
 
@@ -110,21 +77,6 @@ in
     alsa.support32Bit = true;
     pulse.enable = true;
     jack.enable = true;
-  };
-
-  programs.dconf.enable = true;
-
-  xdg.portal = {
-    enable = true;
-    configPackages = [
-      pkgs.xdg-desktop-portal-wlr
-      pkgs.gnome-session
-    ];
-    config = {
-      common = {
-        default = [ "wlr" "gtk" ];
-      };
-    };
   };
 
   services.flatpak.enable = true;
@@ -176,27 +128,11 @@ in
         qbittorrent
         filezilla
         vlc
-        # Packages for wm:
-        dconf
-        brightnessctl
-        grim
-        slurp
-        swaybg
-        swayidle
-        wl-clipboard
-        gdu
-        btop
-        pavucontrol
       ];
       programs.bash = {
         enable = true;
         bashrcExtra = "
-if [ \"$(tty)\" = \"/dev/tty1\" ]; then
-  dbus-run-session sway --unsupported-gpu
-else
-  fastfetch
-fi
-alias sway='dbus-run-session sway --unsupported-gpu'
+alias sway='sway --unsupported-gpu'
 ";
       };
 
@@ -271,6 +207,7 @@ alias sway='dbus-run-session sway --unsupported-gpu'
       home.stateVersion = "24.11";
     };
     useGlobalPkgs = true;
+    useUserPackages = true;
   };
 
   # Allow unfree packages

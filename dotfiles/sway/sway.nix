@@ -30,14 +30,60 @@ let
   # Sway basic apps
   modifier = "Mod4";
   terminal = "kitty";
-  menu = "dmenu_path | wofi --allow-images --show=drun | xargs swaymsg exec --";
+  menu = "wofi --allow-images --show=drun | xargs swaymsg exec --";
 in
 {
+  # Window Manager install on system level, configured by home-manager.
+  programs.sway = {
+    enable = true;
+    package = pkgs.swayfx;
+    wrapperFeatures = {
+      base = true;
+      gtk = true;
+    };
+    xwayland.enable = true;
+    extraOptions = [
+      "--unsupported-gpu"
+    ];
+  };
+
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+  };
+
+  xdg.portal = {
+    enable = true;
+    configPackages = [
+      pkgs.xdg-desktop-portal-wlr
+      pkgs.gnome-session
+    ];
+    config = {
+      common = {
+        default = [ "wlr" "gtk" ];
+      };
+    };
+  };
+
   home-manager = {
     users.${user} = { pkgs, lib, ... }: {
+
+      home.packages = with pkgs; [
+        # Packages for wm:
+        dconf
+        brightnessctl
+        grim
+        slurp
+        swaybg
+        wl-clipboard
+        gdu
+        btop
+        pavucontrol
+      ];
+
       ### sway wm configuration:
       # Based on sway config by https://github.com/arkboix
       # Found here: https://github.com/arkboix/sway/
+      wayland.systemd.target = "sway-session.target";
       wayland.windowManager.sway = {
         checkConfig = false;
         # Used to bypass an error in SwayFX that causes a build failure, see terminal output below:
@@ -45,11 +91,19 @@ in
           # 00:00:00.001 [sway/server.c:150] Failed to create fx_renderer
 
         enable = true;
-        package = pkgs.swayfx;
+        package = null;
         wrapperFeatures = {
           base = true;
           gtk = true;
         };
+        
+        systemd = {
+          enable = true;
+          variables = [
+            "--all"
+          ];
+        };
+
         xwayland = true;
         extraOptions = [ "--unsupported-gpu" ];
         config = {
@@ -282,9 +336,8 @@ in
         dim_inactive_colors.urgent #900000FF
         ";
 
+        # exec swayidle -w \ timeout 600 'swaymsg \"output * power off\"' resume 'swaymsg \"output * power on\"' \ 
         extraConfig = "
-        exec swayidle -w \ timeout 600 'swaymsg \"output * power off\"' resume 'swaymsg \"output * power on\"' \ 
-
         exec mako
 
         exec wl-paste --type text --watch cliphist store &
@@ -295,18 +348,20 @@ in
       };
 
       ### swayidle configuration:
-      # Just doesn't work for me when enabled as a home manager service,
-      # so I've embedded it inside the sway config.
-      #services.swayidle = {
-      #  enable = true;
-      #  timeouts = [
-      #    {
-      #      timeout = 300;
-      #      command = "${pkgs.swayfx}/bin/swagmsg \"output * power off\"";
-      #      resumeCommand = "${pkgs.swayfx}/bin/swaymsg \"output * power on\"";
-      #    }
-      #  ];
-      #};
+      services.swayidle = {
+        enable = true;
+        systemdTarget = "sway-session.target";
+        extraArgs = [
+          "-w"
+        ];
+        timeouts = [
+          {
+            timeout = 5;
+            command = "swagmsg 'output * power off'";
+            resumeCommand = "swaymsg 'output * power on'";
+          }
+        ];
+      };
     };
   };
 }
