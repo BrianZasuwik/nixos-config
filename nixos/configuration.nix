@@ -61,7 +61,13 @@ in
   ### Display manager (ly)
   services.displayManager.ly.enable = true;
 
+  ### Power management
   powerManagement.enable = true;
+  services.upower = {
+    enable = true;
+    percentageLow = 25;
+    percentageCritical = 10;
+  };
 
   programs.dconf.enable = true;
   services.gnome.gnome-keyring.enable = true;
