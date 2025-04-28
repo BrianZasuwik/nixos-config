@@ -40,7 +40,7 @@ in
         borderRadius = 10;
         icons = true;
         maxIconSize = 64;
-        defaultTimeout = 5000;
+        defaultTimeout = 15000;
         ignoreTimeout = true;
         extraConfig = "
 [urgency=high]
