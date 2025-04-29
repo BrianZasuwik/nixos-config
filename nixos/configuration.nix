@@ -12,19 +12,17 @@ let
   home-manager = builtins.fetchTarball https://github.com/nix-community/home-manager/archive/release-24.11.tar.gz;
   #unstableTarball = builtins.fetchTarball https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
 
-  # User variables
-  user = "bzas"; # Change to your username
-  name = "Brian Zasuwik"; # Change to your name
+  profile = import ./../user/profile.nix {};
 in
 {
   imports =
     [
       /etc/nixos/hardware-configuration.nix # Include the results of the hardware scan.
       /etc/nixos/device-configuration.nix # Include the device specific config (hardware configuration other than scan results)
-      /home/${user}/nixos-config/dotfiles/sway/sway.nix
-      /home/${user}/nixos-config/dotfiles/wofi/wofi.nix
-      /home/${user}/nixos-config/dotfiles/waybar/waybar.nix
-      /home/${user}/nixos-config/dotfiles/mako/mako.nix
+      ./../dotfiles/sway/sway.nix
+      ./../dotfiles/wofi/wofi.nix
+      ./../dotfiles/waybar/waybar.nix
+      ./../dotfiles/mako/mako.nix
       (import "${home-manager}/nixos")
     ];
 
@@ -32,21 +30,21 @@ in
   networking.networkmanager.enable = true;
 
   # Set your time zone.
-  time.timeZone = "Europe/London";
+  time.timeZone = "${profile.timezone}";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_GB.UTF-8";
+  i18n.defaultLocale = "${profile.locale}";
 
   i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_GB.UTF-8";
-    LC_IDENTIFICATION = "en_GB.UTF-8";
-    LC_MEASUREMENT = "en_GB.UTF-8";
-    LC_MONETARY = "en_GB.UTF-8";
-    LC_NAME = "en_GB.UTF-8";
-    LC_NUMERIC = "en_GB.UTF-8";
-    LC_PAPER = "en_GB.UTF-8";
-    LC_TELEPHONE = "en_GB.UTF-8";
-    LC_TIME = "en_GB.UTF-8";
+    LC_ADDRESS = "${profile.locale}";
+    LC_IDENTIFICATION = "${profile.locale}";
+    LC_MEASUREMENT = "${profile.locale}";
+    LC_MONETARY = "${profile.locale}";
+    LC_NAME = "${profile.locale}";
+    LC_NUMERIC = "${profile.locale}";
+    LC_PAPER = "${profile.locale}";
+    LC_TELEPHONE = "${profile.locale}";
+    LC_TIME = "${profile.locale}";
   };
 
   services.xserver = {
@@ -96,9 +94,9 @@ in
 
   services.syncthing = {
     enable = true;
-    user = "${user}";
-    dataDir = "/home/${user}";
-    configDir = "/home/${user}/.config/syncthing";
+    user = "${profile.user}";
+    dataDir = "/home/${profile.user}";
+    configDir = "/home/${profile.user}/.config/syncthing";
     guiAddress = "127.0.0.1:8384";
   };
 
@@ -109,9 +107,9 @@ in
   security.polkit.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${user} = {
+  users.users.${profile.user} = {
     isNormalUser = true;
-    description = "${name}";
+    description = "${profile.name}";
     extraGroups = [ "networkmanager" "wheel" "video" "audio" "usb" "plugdev" "kvm" "users" "vboxusers" ];
     packages = with pkgs; [];
   };
@@ -119,10 +117,10 @@ in
   qt.style = "adwaita-dark";
 
   home-manager = {
-    users.${user} = { pkgs, lib, ... }: {
+    users.${profile.user} = { pkgs, lib, ... }: {
 
-      home.username = "${user}";
-      home.homeDirectory = "/home/${user}";
+      home.username = "${profile.user}";
+      home.homeDirectory = "/home/${profile.user}";
 
       home.packages = with pkgs; [
         discord
@@ -174,13 +172,13 @@ alias sway='sway --unsupported-gpu'
 
       ### Automatically link any external configuration files into .config
       # Less prefereable than directly managing via home manager but necessary for some which are missing modules.
-      #xdg.configFile."sway/config".source = "/home/${user}/nixos-config/dotfiles/sway/config";
-      #xdg.configFile."waybar/style.css".source = "/home/${user}/nixos-config/dotfiles/waybar/style.css";
-      #xdg.configFile."waybar/config.jsonc".source = "/home/${user}/nixos-config/dotfiles/waybar/config.jsonc";
-      #xdg.configFile."mako/config".source = "/home/${user}/nixos-config/dotfiles/mako/config";
-      #xdg.configFile."wofi/style.css".source = "/home/${user}/nixos-config/dotfiles/wofi/style.css";
-      xdg.configFile."xfce/helpers.rc".source = "/home/${user}/nixos-config/dotfiles/xfce4/helpers.rc";
-      #xdg.configFile."kitty/kitty.conf".source = "/home/${user}/nixos-config/dotfiles/kitty/kitty.conf";
+      #xdg.configFile."sway/config".source = "/home/${profile.user}/nixos-config/dotfiles/sway/config";
+      #xdg.configFile."waybar/style.css".source = "/home/${profile.user}/nixos-config/dotfiles/waybar/style.css";
+      #xdg.configFile."waybar/config.jsonc".source = "/home/${profile.user}/nixos-config/dotfiles/waybar/config.jsonc";
+      #xdg.configFile."mako/config".source = "/home/${profile.user}/nixos-config/dotfiles/mako/config";
+      #xdg.configFile."wofi/style.css".source = "/home/${profile.user}/nixos-config/dotfiles/wofi/style.css";
+      xdg.configFile."xfce/helpers.rc".source = "/home/${profile.user}/nixos-config/dotfiles/xfce4/helpers.rc";
+      #xdg.configFile."kitty/kitty.conf".source = "/home/${profile.user}/nixos-config/dotfiles/kitty/kitty.conf";
 
       ### Theme configs
       # Change to catppuccin once home manager is properly set up and happy with other configs?

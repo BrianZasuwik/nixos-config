@@ -1,55 +1,40 @@
 { config, pkgs, ... }:
 
 let
-  user = "bzas";
-
-  # Theming & colour variables
-  background = "#212121";
-  background-light = "#3a3a3a";
-  border = "#285577";
-  foreground = "#e0e0e0";
-  black = "#5a5a5a";
-  red = "#ff9a9e";
-  green = "#b5e8a9";
-  yellow = "#ffe6a7";
-  blue = "#63a4ff";
-  magenta = "#dda0dd";
-  cyan = "#a3e8e8";
-  white = "#ffffff";
-  orange = "#ff8952";
-  crimson = "#c92225";
+  colors = import ./../../user/colors.nix {};
+  profile = import ./../../user/profile.nix {};
 in
 {
   home-manager = {
-    users.${user} = { pkgs, ... }: {      
+    users.${profile.user} = { pkgs, ... }: {      
       ### wofi configuration:
       programs.wofi = {
         enable = true;
         style = "
 window {
     margin: 0px;
-    border: 2px solid ${border};
+    border: 2px solid ${colors.border};
     border-radius: 10px;
-    background-color: ${background};
+    background-color: ${colors.background};
 }
 
 #input {
     margin: 5px;
     border: none;
     color: #a3e8e8;
-    background-color: ${background-light};
+    background-color: ${colors.background-light};
 }
 
 #inner-box {
     margin: 5px;
     border: none;
-    background-color: ${background};
+    background-color: ${colors.background};
 }
 
 #outer-box {
     margin: 5px;
     border: none;
-    background-color: ${background};
+    background-color: ${colors.background};
 }
 
 #scroll {
@@ -60,19 +45,19 @@ window {
 #text {
     margin: 5px;
     border: none;
-    color: ${cyan};
+    color: ${colors.cyan};
 } 
 
 #entry.activatable #text {
-    color: ${background};
+    color: ${colors.background};
 }
 
 #entry > * {
-    color: ${cyan};
+    color: ${colors.cyan};
 }
 
 #entry:selected {
-    background-color: ${background-light};
+    background-color: ${colors.background-light};
 }
 
 #entry:selected #text {

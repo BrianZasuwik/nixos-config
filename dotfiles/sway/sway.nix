@@ -1,34 +1,13 @@
 { config, pkgs, ... }:
 
 let
-  user = "bzas";
+  colors = import ./../../user/colors.nix {};
+  profile = import ./../../user/profile.nix {};
 
-  # Theming & colour variables
-  background = "#212121";
-  background-light = "#3a3a3a";
-  border = "#285577";
-  foreground = "#e0e0e0";
-  black = "#5a5a5a";
-  red = "#ff9a9e";
-  green = "#b5e8a9";
-  yellow = "#ffe6a7";
-  blue = "#63a4ff";
-  magenta = "#dda0dd";
-  cyan = "#a3e8e8";
-  white = "#ffffff";
-  orange = "#ff8952";
-  crimson = "#c92225";
-
+  # Wallpaper
   wallpaper = "M31_IRAC-MIPS.jpg";
 
-  # Navigation keys
-  up = "i";
-  left = "j";
-  down = "k";
-  right = "l";
-
   # Sway basic apps
-  modifier = "Mod4";
   terminal = "kitty";
   menu = "wofi --allow-images --show=drun | xargs swaymsg exec --";
 in
@@ -65,7 +44,7 @@ in
   };
 
   home-manager = {
-    users.${user} = { pkgs, lib, ... }: {
+    users.${profile.user} = { pkgs, lib, ... }: {
 
       home.packages = with pkgs; [
         # Packages for wm:
@@ -112,7 +91,7 @@ in
 
           terminal = "${terminal}";
           menu = "${menu}";
-          modifier = "${modifier}";
+          modifier = "${profile.modifier}";
 
           focus = {
             followMouse = true;
@@ -129,10 +108,27 @@ in
             inner = 10;
           };
 
-          up = "${up}";
-          down = "${down}";
-          left = "${left}";
-          right = "${right}";
+          colors = {
+            focused = {
+              background = "${colors.border}";
+              border = "${colors.border}";
+              childBorder = "${colors.border}";
+              indicator = "${colors.blue}";
+              text = "${colors.white}";
+            };
+            unfocused = {
+              background = "${colors.background-light}";
+              border = "${colors.background}";
+              childBorder = "${colors.background}";
+              indicator = "${colors.background-light}";
+              text = "${colors.white}";
+            };
+          };
+
+          up = "${profile.up}";
+          down = "${profile.down}";
+          left = "${profile.left}";
+          right = "${profile.right}";
 
           window = {
             border = 2;
@@ -186,103 +182,103 @@ in
 
           keybindings = with lib; lib.mkOptionDefault {
             # Start a terminal
-            "${modifier}+Return" = "exec ${terminal}";
-            "${modifier}+F1" = "exec ${terminal}";
+            "${profile.modifier}+Return" = "exec ${terminal}";
+            "${profile.modifier}+F1" = "exec ${terminal}";
               # The Mod+F(Key) binds are held over from my Gnome setup
               # as I am used to them.
 
             # Start a web browser
             "XF86HomePage" = "exec firefox";
-            "${modifier}+F2" = "exec firefox";
+            "${profile.modifier}+F2" = "exec firefox";
 
             # Start a file manager
-            "${modifier}+F3" = "exec thunar";
+            "${profile.modifier}+F3" = "exec thunar";
 
             # Kill focused window
-            "${modifier}+Shift+q" = "kill";
+            "${profile.modifier}+Shift+q" = "kill";
 
             # Start your launcher
-            "${modifier}+d" = "exec ${menu}";
+            "${profile.modifier}+d" = "exec ${menu}";
 
             # Reload the config file
-            "${modifier}+Shift+c" = "reload";
+            "${profile.modifier}+Shift+c" = "reload";
               # Won't be reloading any changes on the fly as Sway's managed by
               # home maanger, but it might come in handy in case something breaks
               # ¯\_(ツ)_/¯
 
             # Exit sway
-            "${modifier}+Shift+e" = "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'";
+            "${profile.modifier}+Shift+e" = "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'";
 
             ### Moving around
             # Moving your focus around
-            "${modifier}+Left" = "focus left";
-            "${modifier}+Down" = "focus down";
-            "${modifier}+Up" = "focus up";
-            "${modifier}+Right" = "focus right";
-            "${modifier}+${left}" = "focus left";
-            "${modifier}+${down}" = "focus down";
-            "${modifier}+${up}" = "focus up";
-            "${modifier}+${right}" = "focus right";
+            "${profile.modifier}+Left" = "focus left";
+            "${profile.modifier}+Down" = "focus down";
+            "${profile.modifier}+Up" = "focus up";
+            "${profile.modifier}+Right" = "focus right";
+            "${profile.modifier}+${profile.left}" = "focus left";
+            "${profile.modifier}+${profile.down}" = "focus down";
+            "${profile.modifier}+${profile.up}" = "focus up";
+            "${profile.modifier}+${profile.right}" = "focus right";
             # Moving the focused window
-            "${modifier}+Shift+Left" = "move left";
-            "${modifier}+Shift+Down" = "move down";
-            "${modifier}+Shift+Up" = "move up";
-            "${modifier}+Shift+Right" = "move right";
-            "${modifier}+Shift+${left}" = "move left";
-            "${modifier}+Shift+${down}" = "move down";
-            "${modifier}+Shift+${up}" = "move up";
-            "${modifier}+Shift+${right}" = "move right";
+            "${profile.modifier}+Shift+Left" = "move left";
+            "${profile.modifier}+Shift+Down" = "move down";
+            "${profile.modifier}+Shift+Up" = "move up";
+            "${profile.modifier}+Shift+Right" = "move right";
+            "${profile.modifier}+Shift+${profile.left}" = "move left";
+            "${profile.modifier}+Shift+${profile.down}" = "move down";
+            "${profile.modifier}+Shift+${profile.up}" = "move up";
+            "${profile.modifier}+Shift+${profile.right}" = "move right";
 
             ### Workspaces
             # Switch to workspace
-            "${modifier}+1" = "workspace number 1";
-            "${modifier}+2" = "workspace number 2";
-            "${modifier}+3" = "workspace number 3";
-            "${modifier}+4" = "workspace number 4";
-            "${modifier}+5" = "workspace number 5";
-            "${modifier}+6" = "workspace number 6";
-            "${modifier}+7" = "workspace number 7";
-            "${modifier}+8" = "workspace number 8";
-            "${modifier}+9" = "workspace number 9";
-            "${modifier}+0" = "workspace number 10";
+            "${profile.modifier}+1" = "workspace number 1";
+            "${profile.modifier}+2" = "workspace number 2";
+            "${profile.modifier}+3" = "workspace number 3";
+            "${profile.modifier}+4" = "workspace number 4";
+            "${profile.modifier}+5" = "workspace number 5";
+            "${profile.modifier}+6" = "workspace number 6";
+            "${profile.modifier}+7" = "workspace number 7";
+            "${profile.modifier}+8" = "workspace number 8";
+            "${profile.modifier}+9" = "workspace number 9";
+            "${profile.modifier}+0" = "workspace number 10";
             # Move focused container to workspace
-            "${modifier}+Shift+1" = "move container to workspace number 1";
-            "${modifier}+Shift+2" = "move container to workspace number 2";
-            "${modifier}+Shift+3" = "move container to workspace number 3";
-            "${modifier}+Shift+4" = "move container to workspace number 4";
-            "${modifier}+Shift+5" = "move container to workspace number 5";
-            "${modifier}+Shift+6" = "move container to workspace number 6";
-            "${modifier}+Shift+7" = "move container to workspace number 7";
-            "${modifier}+Shift+8" = "move container to workspace number 8";
-            "${modifier}+Shift+9" = "move container to workspace number 9";
-            "${modifier}+Shift+0" = "move container to workspace number 10";
+            "${profile.modifier}+Shift+1" = "move container to workspace number 1";
+            "${profile.modifier}+Shift+2" = "move container to workspace number 2";
+            "${profile.modifier}+Shift+3" = "move container to workspace number 3";
+            "${profile.modifier}+Shift+4" = "move container to workspace number 4";
+            "${profile.modifier}+Shift+5" = "move container to workspace number 5";
+            "${profile.modifier}+Shift+6" = "move container to workspace number 6";
+            "${profile.modifier}+Shift+7" = "move container to workspace number 7";
+            "${profile.modifier}+Shift+8" = "move container to workspace number 8";
+            "${profile.modifier}+Shift+9" = "move container to workspace number 9";
+            "${profile.modifier}+Shift+0" = "move container to workspace number 10";
 
             ### Layout controls
             # Split
-            "${modifier}+b" = "splith";
-            "${modifier}+v" = "splitv";
+            "${profile.modifier}+b" = "splith";
+            "${profile.modifier}+v" = "splitv";
             # Switch current container between different layout styles
-            "${modifier}+s" = "layout stacking";
-            "${modifier}+w" = "layout tabbed";
-            "${modifier}+e" = "layout toggle split";
+            "${profile.modifier}+s" = "layout stacking";
+            "${profile.modifier}+w" = "layout tabbed";
+            "${profile.modifier}+e" = "layout toggle split";
             # Make current window fullscreen
-            "${modifier}+f" = "fullscreen";
+            "${profile.modifier}+f" = "fullscreen";
             # Toggle floating for current window
-            "${modifier}+Shift+space" = "floating toggle";
+            "${profile.modifier}+Shift+space" = "floating toggle";
             # Swap focus between tiling area and floating area
-            "${modifier}+space" = "focus mode_toggle";
+            "${profile.modifier}+space" = "focus mode_toggle";
             # Move focus to parent container
-            "${modifier}+a" = "focus parent";
+            "${profile.modifier}+a" = "focus parent";
 
             ### Scratchpad
             # Move currently focused window to the scratchpad
-            "${modifier}+Shift+minus" = "move scratchpad";
+            "${profile.modifier}+Shift+minus" = "move scratchpad";
             # Cycle through the scratchpad
-            "${modifier}+minus" = "scratchpad show";
+            "${profile.modifier}+minus" = "scratchpad show";
 
             ### Modes
             # Resize mode
-            "${modifier}+r" = "mode resize";
+            "${profile.modifier}+r" = "mode resize";
 
             # Brightness Control
             "XF86MonBrightnessDown" = "exec brightnessctl set 5%-";
@@ -292,8 +288,8 @@ in
             "XF86AudioRaiseVolume" = "exec 'pactl set-sink-volume @DEFAULT_SINK@ +1%'";
             "XF86AudioLowerVolume" = "exec 'pactl set-sink-volume @DEFAULT_SINK@ -1%'";
             "XF86AudioMute" = "exec 'pactl set-sink-mute @DEFAULT_SINK@ toggle'";
-            "${modifier}+XF86AudioRaiseVolume" = "exec 'pactl set-source-volume @DEFAULT_SOURCE@ +1%'";
-            "${modifier}+XF86AudioLowerVolume" = "exec 'pactl set-source-volume @DEFAULT_SOURCE@ -1%'";
+            "${profile.modifier}+XF86AudioRaiseVolume" = "exec 'pactl set-source-volume @DEFAULT_SOURCE@ +1%'";
+            "${profile.modifier}+XF86AudioLowerVolume" = "exec 'pactl set-source-volume @DEFAULT_SOURCE@ -1%'";
             "XF86AudioMicMute" = "exec 'pactl set-source-mute @DEFAULT_SOURCE@ toggle'";
 
             ### Media controls
@@ -317,10 +313,10 @@ in
               Down = "resize grow height 10px";
               Left = "resize shrink width 10px";
               Right = "resize grow width 10px";
-              "${up}" = "resize shrink height 10px";
-              "${down}" = "resize grow height 10px";
-              "${left}" = "resize shrink width 10px";
-              "${right}" = "resize grow width 10px";
+              "${profile.up}" = "resize shrink height 10px";
+              "${profile.down}" = "resize grow height 10px";
+              "${profile.left}" = "resize shrink width 10px";
+              "${profile.right}" = "resize grow width 10px";
               Return = "mode default";
               Escape = "mode default";
             };
@@ -328,7 +324,7 @@ in
 
           output = {
             "*" = {
-              bg = "/home/${user}/nixos-config/wallpapers/${wallpaper} fill";
+              bg = "/home/${profile.user}/nixos-config/wallpapers/${wallpaper} fill";
             };
           };
         };
@@ -374,13 +370,13 @@ in
         timeouts = [
           {
             timeout = 300;
-            command = "/run/current-system/sw/bin/brightnessctl set 0 -d tpacpi::kbd_backlight -s && /run/current-system/sw/bin/brightnessctl set 5% -s";
-            resumeCommand = "/run/current-system/sw/bin/brightnessctl -d tpacpi::kbd_backlight -r && /run/current-system/sw/bin/brightnessctl -r";
+            command = "${pkgs.brightnessctl}/bin/brightnessctl set 0 -d tpacpi::kbd_backlight -s && ${pkgs.brightnessctl}/bin/brightnessctl set 5% -s";
+            resumeCommand = "${pkgs.brightnessctl}/bin/brightnessctl -d tpacpi::kbd_backlight -r && ${pkgs.brightnessctl}/bin/brightnessctl -r";
           }
           {
             timeout = 600;
             command = "${pkgs.swayfx}/bin/swaymsg 'output * power off'";
-            resumeCommand = "/run/current-system/sw/bin/brightnessctl -d tpacpi::kbd_backlight -r && ${pkgs.swayfx}/bin/swaymsg 'output * power on'";
+            resumeCommand = "${pkgs.brightnessctl}/bin/brightnessctl -d tpacpi::kbd_backlight -r && ${pkgs.swayfx}/bin/swaymsg 'output * power on'";
           }
         ];
       };

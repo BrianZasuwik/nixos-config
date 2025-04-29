@@ -1,27 +1,12 @@
 { config, pkgs, ... }:
 
 let
-  user = "bzas";
-
-  # Theming & colour variables
-  background = "#212121";
-  background-light = "#3a3a3a";
-  border = "#285577";
-  foreground = "#e0e0e0";
-  black = "#5a5a5a";
-  red = "#ff9a9e";
-  green = "#b5e8a9";
-  yellow = "#ffe6a7";
-  blue = "#63a4ff";
-  magenta = "#dda0dd";
-  cyan = "#a3e8e8";
-  white = "#ffffff";
-  orange = "#ff8952";
-  crimson = "#c92225";
+  colors = import ./../../user/colors.nix {};
+  profile = import ./../../user/profile.nix {};
 in
 {
   home-manager = {
-    users.${user} = { pkgs, ... }: {
+    users.${profile.user} = { pkgs, ... }: {
       ### waybar configuration:
       # Based on sway config by https://github.com/arkboix
       # Found here: https://github.com/arkboix/sway/
@@ -152,7 +137,7 @@ in
               format-disconnected = "󰖪 Disconnected";
               format-alt = "{ifname}: {ipaddr}/{cidr}";
               tooltip-format = "{ifname}: {ipaddr}";
-              on-click = "kitty -e nmtui";
+              on-click-right = "kitty -e nmtui";
             };
             "bluetooth" = {
               format = " {status}";
@@ -204,40 +189,40 @@ in
         };
         style = "
 /* Module-specific colors */
-@define-color workspaces-color ${foreground};
-@define-color workspaces-focused-bg ${green};
-@define-color workspaces-focused-fg ${cyan};
-@define-color workspaces-urgent-bg ${red};
-@define-color workspaces-urgent-fg ${black};
+@define-color workspaces-color ${colors.foreground};
+@define-color workspaces-focused-bg ${colors.green};
+@define-color workspaces-focused-fg ${colors.cyan};
+@define-color workspaces-urgent-bg ${colors.red};
+@define-color workspaces-urgent-fg ${colors.black};
 
 /* Text and border colors for modules */
-@define-color mode-color ${orange};
-@define-color mpd-color ${magenta};
-@define-color weather-color ${magenta};
-@define-color playerctl-color ${magenta};
-@define-color clock-color ${blue};
-@define-color cpu-color ${green};
-@define-color memory-color ${magenta};
-@define-color temperature-color ${yellow};
-@define-color temperature-critical-color ${red};
-@define-color battery-color ${cyan};
-@define-color battery-charging-color ${green};
-@define-color battery-warning-color ${yellow};
-@define-color battery-critical-color ${red};
-@define-color network-color ${blue};
-@define-color network-disconnected-color ${crimson};
-@define-color pulseaudio-color ${orange};
-@define-color pulseaudio-muted-color ${red};
-@define-color backlight-color ${yellow};
-@define-color disk-color ${cyan};
-@define-color uptime-color ${green};
-@define-color updates-color ${orange};
-@define-color quote-color ${green};
-@define-color idle-inhibitor-color ${foreground};
-@define-color idle-inhibitor-active-color ${red};
-@define-color power-color ${crimson};
-@define-color bluetooth-color ${blue};
-@define-color bluetooth-disconnected-color ${crimson};
+@define-color mode-color ${colors.orange};
+@define-color mpd-color ${colors.magenta};
+@define-color weather-color ${colors.magenta};
+@define-color playerctl-color ${colors.magenta};
+@define-color clock-color ${colors.blue};
+@define-color cpu-color ${colors.green};
+@define-color memory-color ${colors.magenta};
+@define-color temperature-color ${colors.yellow};
+@define-color temperature-critical-color ${colors.red};
+@define-color battery-color ${colors.cyan};
+@define-color battery-charging-color ${colors.green};
+@define-color battery-warning-color ${colors.yellow};
+@define-color battery-critical-color ${colors.red};
+@define-color network-color ${colors.blue};
+@define-color network-disconnected-color ${colors.crimson};
+@define-color pulseaudio-color ${colors.orange};
+@define-color pulseaudio-muted-color ${colors.red};
+@define-color backlight-color ${colors.yellow};
+@define-color disk-color ${colors.cyan};
+@define-color uptime-color ${colors.green};
+@define-color updates-color ${colors.orange};
+@define-color quote-color ${colors.green};
+@define-color idle-inhibitor-color ${colors.foreground};
+@define-color idle-inhibitor-active-color ${colors.red};
+@define-color power-color ${colors.crimson};
+@define-color bluetooth-color ${colors.blue};
+@define-color bluetooth-disconnected-color ${colors.crimson};
 
 * {
     /* Base styling for all modules */
@@ -249,8 +234,8 @@ in
 }
 
 window#waybar {
-    background-color: ${background};
-    color: ${foreground};
+    background-color: ${colors.background};
+    color: ${colors.foreground};
 }
 
 /* Common module styling with border-bottom */
@@ -273,7 +258,7 @@ window#waybar {
 }
 
 #workspaces button:hover {
-    background: ${background-light};
+    background: ${colors.background-light};
     box-shadow: inherit;
 }
 
@@ -453,8 +438,8 @@ window#waybar {
 
 #tray > .needs-attention {
     -gtk-icon-effect: highlight;
-    color: ${red};
-    border-bottom-color: ${red};
+    color: ${colors.red};
+    border-bottom-color: ${colors.red};
 }
 ";
       };

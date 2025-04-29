@@ -4,7 +4,7 @@
 { config, pkgs, ... }:
 
 let
-  user = "bzas"; # Change to your username
+  profile = import ./../user/profile.nix {};
 in
 {
   # Bootloader
@@ -32,7 +32,7 @@ in
 
   # Device specific home-manager configs
   home-manager = {
-    users.${user} = { pkgs, ... }: {
+    users.${profile.user} = { pkgs, ... }: {
       wayland.windowManager.sway = {
         config = {
           output = {
