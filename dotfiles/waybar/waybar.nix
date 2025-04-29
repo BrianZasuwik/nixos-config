@@ -22,7 +22,7 @@ in
             positon = "top";
             height = 30;
             modules-left = [ "sway/workspaces" "sway/mode" "custom/quote" ];
-            modules-center = [ "clock" ];
+            modules-center = [ "clock" "playerctl" ];
             modules-right = [ "pulseaudio" "backlight" "network" "bluetooth" "cpu" "memory" "battery" "tray" ];
 
             "sway/workspaces" = {
@@ -151,10 +151,12 @@ in
               on-click = "blueman-manager";
             };
             "pulseaudio" = {
-              format = "{icon} {volume}%";
-              format-bluetooth = "󰂰 {volume}%";
-              format-bluetooth-muted = "󰂲 {icon}";
-              format-muted = "󰝟";
+              format = "{icon} {volume}% {format_source}";
+              format-bluetooth = "󰂰 {volume}% {format_source}";
+              format-bluetooth-muted = "󰂲 {icon} {format_source}";
+              format-muted = "󰝟  {format_source}";
+              format-source = " {volume}%";
+              format-source-muted = "󰍭";
               format-icons = {
                 "headphone" = "󰋋";
                 "hands-free" = "󰥰";
@@ -387,8 +389,8 @@ window#waybar {
 }
 
 #pulseaudio.muted {
-    color: @pulseaudio-muted-color;
-    border-bottom-color: @pulseaudio-muted-color;
+    color: @pulseaudio-color;
+    border-bottom-color: @pulseaudio-color;
 }
 
 #backlight {
