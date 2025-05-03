@@ -278,17 +278,15 @@ alias sway='sway --unsupported-gpu'
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-emoji
-      font-awesome
       source-han-sans
-      source-han-sans-japanese
-      source-han-serif-japanese
       corefonts
       liberation_ttf
-      nerdfonts
+      
+      (nerdfonts.override {fonts = [ "NerdFontsSymbolsOnly" ]; })
     ];
     fontconfig.defaultFonts = {
-      serif = [ "Noto Serif" "Serif" "Source Han Serif" ];
-      sansSerif = [ "Noto Sans" "Sans" "Source Han Sans" ];
+      serif = [ "Noto Serif" "Serif" ];
+      sansSerif = [ "Noto Sans" "Sans" ];
     };
     fontDir.enable = true;
   };
