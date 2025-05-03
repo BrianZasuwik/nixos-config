@@ -9,22 +9,19 @@
 
 { config, pkgs, ... }:
 let
-  home-manager = builtins.fetchTarball https://github.com/nix-community/home-manager/archive/release-24.11.tar.gz;
-  #unstableTarball = builtins.fetchTarball https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
-
   profile = import ./../user/profile.nix {};
 in
 {
   imports =
     [
-      /etc/nixos/hardware-configuration.nix # Include the results of the hardware scan.
-      /etc/nixos/device-configuration.nix # Include the device specific config (hardware configuration other than scan results)
       ./../dotfiles/sway/sway.nix
       ./../dotfiles/wofi/wofi.nix
       ./../dotfiles/waybar/waybar.nix
       ./../dotfiles/mako/mako.nix
-      (import "${home-manager}/nixos")
     ];
+
+  # Enable Flakes
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -282,7 +279,7 @@ alias sway='sway --unsupported-gpu'
       corefonts
       liberation_ttf
       
-      (nerdfonts.override {fonts = [ "NerdFontsSymbolsOnly" ]; })
+      (nerdfonts.override {fonts = [ "NerdFontsSymbolsOnly" "Iosevka" "IosevkaTerm" "IosevkaTermSlab" ]; })
     ];
     fontconfig.defaultFonts = {
       serif = [ "Noto Serif" "Serif" ];
