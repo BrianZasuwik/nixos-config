@@ -199,7 +199,6 @@ alias sway='sway --unsupported-gpu'
         settings = {
           "org/cinnamon/desktop/applications/terminal" = {
             exec = "kitty";
-            #exec-arg = 
           };
         };
       };
