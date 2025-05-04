@@ -13,7 +13,7 @@ in
       programs.waybar = {
         enable = true;
         systemd = {
-          enable = false;
+          enable = true;
           target = "sway-session.target";
         };
         settings = {
@@ -22,7 +22,7 @@ in
             positon = "top";
             height = 30;
             modules-left = [ "sway/workspaces" "sway/mode" "custom/quote" ];
-            modules-center = [ "clock" "playerctl" ];
+            modules-center = [ "clock" "custom/playerctl" ];
             modules-right = [ "pulseaudio" "backlight" "network" "bluetooth" "cpu" "memory" "battery" "tray" ];
 
             "sway/workspaces" = {

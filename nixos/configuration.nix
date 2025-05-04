@@ -126,6 +126,7 @@ in
         fortune
         cowsay
         gimp
+        dconf
         qbittorrent
         filezilla
         vlc
@@ -252,6 +253,7 @@ alias sway='sway --unsupported-gpu'
     gzip
     unzip
     zip
+    dconf
     pulseaudio
     image-roll
     libreoffice

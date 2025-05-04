@@ -32,15 +32,7 @@ in
 
   xdg.portal = {
     enable = true;
-    configPackages = [
-      pkgs.xdg-desktop-portal-wlr
-      pkgs.gnome-session
-    ];
-    config = {
-      common = {
-        default = [ "wlr" "gtk" ];
-      };
-    };
+    wlr.enable = true;
   };
 
   home-manager = {
@@ -48,7 +40,6 @@ in
 
       home.packages = with pkgs; [
         # Packages for wm:
-        dconf
         brightnessctl
         grim
         slurp
