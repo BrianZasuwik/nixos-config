@@ -18,6 +18,7 @@ in
       ./../dotfiles/wofi/wofi.nix
       ./../dotfiles/waybar/waybar.nix
       ./../dotfiles/mako/mako.nix
+      ./../emacs/emacs.nix
     ];
 
   # Enable Flakes
