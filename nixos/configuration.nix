@@ -167,6 +167,9 @@ alias sway='sway --unsupported-gpu'
         ];
       };
 
+      ### KDE Connect
+      services.kdeconnect.enable = true;
+
       ### Automatically link any external configuration files into .config
       # Less prefereable than directly managing via home manager but necessary for some which are missing modules.
       #xdg.configFile."sway/config".source = "/home/${profile.user}/nixos-config/dotfiles/sway/config";
@@ -174,8 +177,22 @@ alias sway='sway --unsupported-gpu'
       #xdg.configFile."waybar/config.jsonc".source = "/home/${profile.user}/nixos-config/dotfiles/waybar/config.jsonc";
       #xdg.configFile."mako/config".source = "/home/${profile.user}/nixos-config/dotfiles/mako/config";
       #xdg.configFile."wofi/style.css".source = "/home/${profile.user}/nixos-config/dotfiles/wofi/style.css";
-      xdg.configFile."xfce/helpers.rc".source = "/home/${profile.user}/nixos-config/dotfiles/xfce4/helpers.rc";
       #xdg.configFile."kitty/kitty.conf".source = "/home/${profile.user}/nixos-config/dotfiles/kitty/kitty.conf";
+
+      xdg.desktopEntries = {
+        nemo = {
+          name = "Nemo";
+          exec = "${pkgs.nemo-with-extensions}/bin/nemo";
+        };
+      };
+      ### Default Applications
+      xdg.mimeApps = {
+        enable = true;
+        defaultApplications = {
+          "inode/directory" = [ "nemo.desktop" ];
+          "application/x-gnome-saved-search" = [ "nemo.desktop" ];
+        };
+      };
 
       ### Theme configs
       # Change to catppuccin once home manager is properly set up and happy with other configs?
@@ -238,6 +255,7 @@ alias sway='sway --unsupported-gpu'
     xdg-utils
     xdg-user-dirs
     xdg-user-dirs-gtk
+    nemo-with-extensions
   ];
 
   programs.steam = {
@@ -258,17 +276,6 @@ alias sway='sway --unsupported-gpu'
       enable = true;
     };
   };
-
-  #Thunar file manager extensions and thumbnail support
-  programs.thunar = {
-    enable = true;
-    plugins = with pkgs.xfce; [
-      thunar-archive-plugin
-      thunar-volman
-    ];
-  };
-  services.tumbler.enable = true;
-  programs.file-roller.enable = true;
 
   fonts = {
     packages = with pkgs; [
@@ -302,10 +309,10 @@ alias sway='sway --unsupported-gpu'
   # services.openssh.enable = true;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall = rec {
+    allowedTCPPortRanges = [ { from = 1714; to = 1764; } ];
+    allowedUDPPortRanges = [ { from = 1714; to = 1764; } ];
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
