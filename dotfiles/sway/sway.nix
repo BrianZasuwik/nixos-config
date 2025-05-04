@@ -33,6 +33,9 @@ in
   xdg.portal = {
     enable = true;
     wlr.enable = true;
+    extraPortals = [
+      pkgs.xdg-desktop-portal-gtk
+    ];
   };
 
   home-manager = {
@@ -341,10 +344,11 @@ in
         extraConfig = "
 
         exec mako
-
+        
         exec wl-paste --type text --watch cliphist store &
         exec wl-paste --type image --watch cliphist store &
 
+        exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
         include /etc/sway/config.d/*
         ";
       };

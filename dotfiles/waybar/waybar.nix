@@ -13,7 +13,7 @@ in
       programs.waybar = {
         enable = true;
         systemd = {
-          enable = true;
+          enable = false;
           target = "sway-session.target";
         };
         settings = {
