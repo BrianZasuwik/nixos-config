@@ -21,8 +21,8 @@ in
             layer = "top";
             positon = "top";
             height = 30;
-            modules-left = [ "clock" "sway/workspaces" "sway/mode" "custom/quote" ];
-            modules-center = [  ];
+            modules-left = [ "clock" "sway/workspaces" "sway/mode" ];
+            modules-center = [ "sway/window" ];
             modules-right = [ "pulseaudio" "backlight" "network" "bluetooth" "cpu" "memory" "battery" "tray" ];
 
             "sway/workspaces" = {
@@ -123,19 +123,19 @@ in
               format-icons = [ "󰂎" "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
             };
             "network" = {
-              format-wifi = "󰖩 {essid} ({signalStrength}%)";
-              format-ethernet = "󰈀 {ifname}";
-              format-linked = "󰈀 {ifname} (No IP)";
-              format-disconnected = "󰖪 Disconnected";
+              format-wifi = "󰖩 ";
+              format-ethernet = "󰈀 ";
+              format-linked = "󰈀 (No IP)";
+              format-disconnected = "󰖪 ";
               format-alt = "{ifname}: {ipaddr}/{cidr}";
-              tooltip-format = "{ifname}: {ipaddr}";
+              tooltip-format = "{essid} ({signalStrength}%)\n{ifname}: {ipaddr}";
               on-click-right = "kitty -e nmtui";
             };
             "bluetooth" = {
-              format = " {status}";
+              format = " ";
               format-disabled = "";
-              format-connected = " {device_alias}";
-              format-connected-battery = " {device_alias} {device_battery_percentage}%";
+              format-connected = "󰂱 ";
+              format-connected-battery = "󰂱 ";
               tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
               tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
               tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
@@ -221,15 +221,34 @@ in
 * {
     /* Base styling for all modules */
     border: none;
-    border-radius: 0;
+    border-radius: 10;
     font-family: \"Iosevka Nerd Font\";
     font-size: 14px;
     min-height: 0;
 }
 
 window#waybar {
-    background-color: ${colors.background};
+    background-color: transparent;
     color: ${colors.foreground};
+}
+
+/* Module Styling */
+.modules-right {
+    background-color: ${colors.background};
+    padding: 1px 6px 0 6px;
+    margin: 2px 10px 0 0;
+    border: 2px solid ${colors.border};
+}
+.modules-center {
+    background-color: transparent;
+    padding: 1px 6px 0 6px;
+    margin: 2px 0 0;
+}
+.modules-left {
+    background-color: ${colors.background};
+    padding: 1px 6px 0 6px;
+    margin: 2px 0 0 10px;
+    border: 2px solid ${colors.border};
 }
 
 /* Common module styling with border-top */
@@ -237,18 +256,20 @@ window#waybar {
 #memory, #temperature, #battery, #network, #pulseaudio,
 #backlight, #disk, #custom-uptime, #custom-updates, #custom-quote,
 #idle_inhibitor, #tray, #bluetooth {
+    border-radius: 0px;
     padding: 0 10px;
-    margin: 0 2px;
+    margin: 3px 2px;
     border-top: 2px solid transparent;
     background-color: transparent;
 }
 
 /* Workspaces styling */
 #workspaces button {
+    border-radius: 0px;
     padding: 0 10px;
     background-color: transparent;
     color: @workspaces-color;
-    margin: 0;
+    margin: 3px;
     border-top: 2px solid transparent;
 }
 
@@ -424,7 +445,8 @@ window#waybar {
 #tray {
     background-color: transparent;
     padding: 0 10px;
-    margin: 0 2px;
+    margin: 3px 2px;
+    border-top: 2px solid ${colors.border};
 }
 
 #tray > .passive {
