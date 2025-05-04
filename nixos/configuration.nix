@@ -194,6 +194,16 @@ alias sway='sway --unsupported-gpu'
         };
       };
 
+      ### dconf settings
+      dconf = {
+        settings = {
+          "org/cinnamon/desktop/applications/terminal" = {
+            exec = "kitty";
+            #exec-arg = 
+          };
+        };
+      };
+
       ### Theme configs
       # Change to catppuccin once home manager is properly set up and happy with other configs?
       gtk = {
