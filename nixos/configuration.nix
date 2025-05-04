@@ -65,6 +65,7 @@ in
   };
 
   programs.dconf.enable = true;
+  services.dbus.implementation = "broker";
   services.gnome.gnome-keyring.enable = true;
   services.gvfs.enable = true;
 
