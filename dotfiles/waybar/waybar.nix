@@ -21,8 +21,8 @@ in
             layer = "top";
             positon = "top";
             height = 30;
-            modules-left = [ "sway/workspaces" "sway/mode" "custom/quote" ];
-            modules-center = [ "clock" "custom/playerctl" ];
+            modules-left = [ "clock" "sway/workspaces" "sway/mode" "custom/quote" ];
+            modules-center = [  ];
             modules-right = [ "pulseaudio" "backlight" "network" "bluetooth" "cpu" "memory" "battery" "tray" ];
 
             "sway/workspaces" = {
@@ -51,14 +51,6 @@ in
             };
             "sway/mode" = {
               format = "<span style=\"italic\">{}</span>";
-            };
-            "custom/playerctl" = {
-              format = " 󰐊 {}";
-              return-type = "json";
-              max-length = 40;
-              exec = "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{artist}} - {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F";
-              on-click = "playerctl play-pause";
-              on-click-right = "playerctl next";
             };
             "custom/power" = {
               format = " 󰐥 ";
@@ -240,14 +232,14 @@ window#waybar {
     color: ${colors.foreground};
 }
 
-/* Common module styling with border-bottom */
+/* Common module styling with border-top */
 #mode, #mpd, #custom-weather, #custom-playerctl, #clock, #cpu,
 #memory, #temperature, #battery, #network, #pulseaudio,
 #backlight, #disk, #custom-uptime, #custom-updates, #custom-quote,
 #idle_inhibitor, #tray, #bluetooth {
     padding: 0 10px;
     margin: 0 2px;
-    border-bottom: 2px solid transparent;
+    border-top: 2px solid transparent;
     background-color: transparent;
 }
 
@@ -257,175 +249,176 @@ window#waybar {
     background-color: transparent;
     color: @workspaces-color;
     margin: 0;
+    border-top: 2px solid transparent;
 }
 
 #workspaces button:hover {
     background: ${colors.background-light};
-    box-shadow: inherit;
 }
 
 #workspaces button.focused {
-    box-shadow: inset 0 -2px @workspaces-focused-fg;
     color: @workspaces-focused-fg;
+    border-top-color: @worldspaces-focused-fg;
     font-weight: 900;
 }
 
 #workspaces button.urgent {
     background-color: @workspaces-urgent-bg;
     color: @workspaces-urgent-fg;
+    border-top-color: @worldspaces-urgent-fg;
 }
 
 /* Module-specific styling */
 #custom-power {
     font-size: 16px;
     color: @power-color;
-    border-bottom-color: @power-color;
+    border-top-color: @power-color;
 }
 
 #mode {
     color: @mode-color;
-    border-bottom-color: @mode-color;
+    border-top-color: @mode-color;
 }
 
 #mpd {
     color: @mpd-color;
-    border-bottom-color: @mpd-color;
+    border-top-color: @mpd-color;
 }
 
 #mpd.disconnected,
 #mpd.stopped {
     color: @foreground;
-    border-bottom-color: transparent;
+    border-top-color: transparent;
 }
 
 #custom-weather {
     color: @weather-color;
-    border-bottom-color: @weather-color;
+    border-top-color: @weather-color;
 }
 
 #custom-playerctl {
     color: @playerctl-color;
-    border-bottom-color: @playerctl-color;
+    border-top-color: @playerctl-color;
 }
 
 #custom-playerctl.Playing {
     color: @cyan;
-    border-bottom-color: @cyan;
+    border-top-color: @cyan;
 }
 
 #custom-playerctl.Paused {
     color: @orange;
-    border-bottom-color: @orange;
+    border-top-color: @orange;
 }
 
 #clock {
     color: @clock-color;
-    border-bottom-color: @clock-color;
+    border-top-color: @clock-color;
 }
 
 #cpu {
     color: @cpu-color;
-    border-bottom-color: @cpu-color;
+    border-top-color: @cpu-color;
 }
 
 #memory {
     color: @memory-color;
-    border-bottom-color: @memory-color;
+    border-top-color: @memory-color;
 }
 
 #temperature {
     color: @temperature-color;
-    border-bottom-color: @temperature-color;
+    border-top-color: @temperature-color;
 }
 
 #temperature.critical {
     color: @temperature-critical-color;
-    border-bottom-color: @temperature-critical-color;
+    border-top-color: @temperature-critical-color;
 }
 
 #battery {
     color: @battery-color;
-    border-bottom-color: @battery-color;
+    border-top-color: @battery-color;
 }
 
 #battery.charging, #battery.plugged {
     color: @battery-charging-color;
-    border-bottom-color: @battery-charging-color;
+    border-top-color: @battery-charging-color;
 }
 
 #battery.warning:not(.charging) {
     color: @battery-warning-color;
-    border-bottom-color: @battery-warning-color;
+    border-top-color: @battery-warning-color;
 }
 
 #battery.critical:not(.charging) {
     color: @battery-critical-color;
-    border-bottom-color: @battery-critical-color;
+    border-top-color: @battery-critical-color;
 }
 
 #network {
     color: @network-color;
-    border-bottom-color: @network-color;
+    border-top-color: @network-color;
 }
 
 #network.disconnected {
     color: @network-disconnected-color;
-    border-bottom-color: @network-disconnected-color;
+    border-top-color: @network-disconnected-color;
 }
 
 #bluetooth {
     color: @bluetooth-color;
-    border-bottom-color: @bluetooth-color;
+    border-top-color: @bluetooth-color;
 }
 
 #bluetooth.disabled {
     color: @bluetooth-disconnected-color;
-    border-bottom-color: @bluetooth-disconnected-color;
+    border-top-color: @bluetooth-disconnected-color;
 }
 
 #pulseaudio {
     color: @pulseaudio-color;
-    border-bottom-color: @pulseaudio-color;
+    border-top-color: @pulseaudio-color;
 }
 
 #pulseaudio.muted {
     color: @pulseaudio-color;
-    border-bottom-color: @pulseaudio-color;
+    border-top-color: @pulseaudio-color;
 }
 
 #backlight {
     color: @backlight-color;
-    border-bottom-color: @backlight-color;
+    border-top-color: @backlight-color;
 }
 
 #disk {
     color: @disk-color;
-    border-bottom-color: @disk-color;
+    border-top-color: @disk-color;
 }
 
 #custom-uptime {
     color: @uptime-color;
-    border-bottom-color: @uptime-color;
+    border-top-color: @uptime-color;
 }
 
 #custom-updates {
     color: @updates-color;
-    border-bottom-color: @updates-color;
+    border-top-color: @updates-color;
 }
 
 #custom-quote {
     color: @quote-color;
-    border-bottom-color: @quote-color;
+    border-top-color: @quote-color;
 }
 
 #idle_inhibitor {
     color: @idle-inhibitor-color;
-    border-bottom-color: transparent;
+    border-top-color: transparent;
 }
 
 #idle_inhibitor.activated {
     color: @idle-inhibitor-active-color;
-    border-bottom-color: @idle-inhibitor-active-color;
+    border-top-color: @idle-inhibitor-active-color;
 }
 
 #tray {
@@ -441,7 +434,7 @@ window#waybar {
 #tray > .needs-attention {
     -gtk-icon-effect: highlight;
     color: ${colors.red};
-    border-bottom-color: ${colors.red};
+    border-top-color: ${colors.red};
 }
 ";
       };
