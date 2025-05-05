@@ -269,19 +269,6 @@ alias sway='sway --unsupported-gpu'
     nemo-with-extensions
   ];
 
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    localNetworkGameTransfers.openFirewall = true;
-    protontricks = {
-      enable = true;
-      package = pkgs.protontricks;
-    };
-    extraCompatPackages = with pkgs; [
-      proton-ge-bin
-    ];
-  };
-
   virtualisation.virtualbox = {
     host = {
       enable = true;
