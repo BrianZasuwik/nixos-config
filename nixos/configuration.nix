@@ -18,7 +18,6 @@ in
       ./../dotfiles/wofi/wofi.nix
       ./../dotfiles/waybar/waybar.nix
       ./../dotfiles/mako/mako.nix
-      ./../emacs/emacs.nix
     ];
 
   # Enable Flakes
@@ -163,9 +162,9 @@ alias sway='sway --unsupported-gpu'
       ### VSCode configuration:
       programs.vscode = {
         enable = true;
+        package = pkgs.vscodium;
         extensions = with pkgs.vscode-extensions; [
           bbenoist.nix
-          ms-python.python
           ecmel.vscode-html-css
         ];
       };
