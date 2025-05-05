@@ -238,8 +238,6 @@ alias sway='sway --unsupported-gpu'
       #You can update Home Manager without changing this value.
       home.stateVersion = "24.11";
     };
-    useGlobalPkgs = true;
-    useUserPackages = true;
   };
 
   # Allow unfree packages

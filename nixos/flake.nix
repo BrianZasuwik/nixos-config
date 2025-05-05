@@ -13,19 +13,33 @@
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... }@inputs:
   let
     lib = nixpkgs.lib;
-    pkgs-unstable = nixpkgs-unstable.legacyPackages.x86_64-linux;
   in
   {
     nixosConfigurations = {
-      boreas = lib.nixosSystem {
+      boreas = lib.nixosSystem rec {
         system = "x86_64-linux";
         modules = [
           home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              pkgs-unstable = import nixpkgs-unstable {
+                inherit system;
+                config.allowUnfree = true;
+              };
+            };
+          }
           ./configuration.nix
           ./../devices/laptop-boreas-configuration.nix
         ];
         specialArgs = {
-          inherit pkgs-unstable;
+          inherit inputs;
+          pkgs-unstable = import nixpkgs-unstable {
+            inherit system;
+            config.allowUnfree = true;
+          };
         };
       };
     };
