@@ -10,7 +10,7 @@
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... }@inputs:
   let
     lib = nixpkgs.lib;
     pkgs-unstable = nixpkgs-unstable.legacyPackages.x86_64-linux;

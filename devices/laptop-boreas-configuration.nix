@@ -16,6 +16,7 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Kernel
+  boot.kernelPackages = pkgs.linuxPackages;
   boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
@@ -70,7 +71,7 @@ in
   services.tlp = {
     enable = true;
     settings = {
-      START_CHARGE_THRESH_BAT0 = 40;
+      START_CHARGE_THRESH_BAT0 = 79;
       STOP_CHARGE_THRESH_BAT0 = 80;
     };
   };
