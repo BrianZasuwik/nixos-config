@@ -7,11 +7,13 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... }:
   let
     lib = nixpkgs.lib;
+    pkgs-unstable = nixpkgs-unstable.legacyPackages.x86_64-linux;
   in
   {
     nixosConfigurations = {
@@ -22,6 +24,9 @@
           ./configuration.nix
           ./../devices/laptop-boreas-configuration.nix
         ];
+        specialArgs = {
+          inherit pkgs-unstable;
+        };
       };
     };
   };
