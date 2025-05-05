@@ -5,14 +5,21 @@ in
 {
   home-manager = {
     users.${profile.user} = { pkgs, lib, ... }: {
-      programs.emacs = {
-        enable = true;
-      };
       services.emacs = {
         enable = true;
         client = {
           enable = true;
         };
+        package = with pkgs; (
+          (emacsPackagesFor emacs).emacsWithPackages (
+            epkgs: [
+              epkgs.company
+              epkgs.lsp-mode
+              epkgs.magit
+              epkgs.which-key
+            ]
+          )
+        );
       };
     };
   };
