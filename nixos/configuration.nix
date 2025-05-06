@@ -104,6 +104,8 @@ in
 
   security.polkit.enable = true;
 
+  security.sudo-rs.enable = true;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${profile.user} = {
     isNormalUser = true;
@@ -286,8 +288,8 @@ alias sway='sway --unsupported-gpu'
       (nerdfonts.override {fonts = [ "NerdFontsSymbolsOnly" "Iosevka" "IosevkaTerm" "IosevkaTermSlab" ]; })
     ];
     fontconfig.defaultFonts = {
-      serif = [ "Noto Serif" "Serif" ];
-      sansSerif = [ "Noto Sans" "Sans" ];
+      serif = [ "IosevkaTermSlab Nerd Font" "Noto Serif" "Serif" ];
+      sansSerif = [ "IosevkaTerm Nerd Font" "Noto Sans" "Sans" ];
     };
     fontDir.enable = true;
   };
