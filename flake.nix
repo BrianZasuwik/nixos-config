@@ -34,9 +34,9 @@
               };
             };
           }
-          ./configuration.nix
-          ./games.nix
-          ./../devices/laptop-boreas-configuration.nix
+          ./nixos/configuration.nix
+          ./nixos/games.nix
+          ./devices/laptop-boreas-configuration.nix
         ];
         specialArgs = {
           inherit inputs;
