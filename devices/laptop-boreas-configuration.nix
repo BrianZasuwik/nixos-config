@@ -89,6 +89,9 @@ in
               natural_scroll = "enabled";
               middle_emulation = "enabled";
             };
+            "2:10:TPPS/2_Elan_TrackPoint" = {
+              accel_profile = "flat";
+            };
           };
         };
       };
