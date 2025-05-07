@@ -98,6 +98,14 @@ in
     guiAddress = "127.0.0.1:8384";
   };
 
+  # Nix garbage collect
+  nix.gc = {
+    automatic = true;
+    persistent = true;
+    dates = "daily";
+    options = "--delete-older-than 2d";
+  };
+
   services.printing.enable = true;
 
   programs.firefox.enable = true;
