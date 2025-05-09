@@ -46,6 +46,36 @@
           };
         };
       };
+      anemoi = lib.nixosSystem rec{
+        system = "x86_64-linux";
+        modules = [
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              pkgs-unstable = import nixpkgs-unstable {
+                inherit system;
+                config.allowUnfree = true;
+                config.permittedInsecurePackages = [
+                  "dotnet-runtime-7.0.20"
+                ];
+              };
+            };
+          }
+          ./nixos/configuration.nix
+          ./nixos/games.nix
+          ./devices/laptop-anemoi-configuration.nix
+        ];
+        specialArgs = {
+          inherit inputs;
+          pkgs-unstable = import nixpkgs-unstable {
+            inherit system;
+            config.allowUnfree = true;
+          };
+        };
+      };
     };
   };
 }
