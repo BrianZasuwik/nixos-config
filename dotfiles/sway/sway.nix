@@ -8,7 +8,7 @@ let
   wallpaper = "M31_IRAC-MIPS.jpg";
 
   # Sway basic apps
-  terminal = "kitty";
+  terminal = "foot";
   menu = "wofi --allow-images --show=drun | xargs swaymsg exec --";
 in
 {
