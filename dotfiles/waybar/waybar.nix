@@ -103,12 +103,12 @@ in
               format = "󰘚 {usage}%";
               tooltip = true;
               interval = 1;
-              on-click = "kitty -e btop";
+              on-click = "foot btop";
             };
             "memory" = {
               format = "󰍛 {}%";
               interval = 1;
-              on-click = "kitty -e btop";
+              on-click = "foot btop";
             };
             "battery" = {
               states = {
@@ -129,7 +129,7 @@ in
               format-disconnected = "󰖪 ";
               format-alt = "{ifname}: {ipaddr}/{cidr}";
               tooltip-format = "{essid} ({signalStrength}%)\n{ifname}: {ipaddr}";
-              on-click-right = "kitty -e nmtui";
+              on-click-right = "foot nmtui";
             };
             "bluetooth" = {
               format = " ";
@@ -173,7 +173,7 @@ in
               interval = 30;
               format = "󰋊 {percentage_used}%";
               path = "/";
-              on-click = "kitty -e gdu /";
+              on-click = "foot gdu /";
             };
             "tray" = {
               icon-size = 18;

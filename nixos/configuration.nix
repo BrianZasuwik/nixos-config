@@ -145,19 +145,13 @@ alias sway='sway --unsupported-gpu'
 
       services.playerctld.enable = true;
 
-      ### Kitty configuration:
-      programs.kitty = {
+      ### Foot configuration:
+      programs.foot = {
         enable = true;
-        shellIntegration = {
-          enableBashIntegration = true;
-          enableFishIntegration = false;
-          enableZshIntegration = false;
-        };
         settings = {
-          confirm_os_window_close = 0;
-          background_opacity = 0.7;
-          background_blur = 48;
-          background_tint = 0.1;
+          main = {
+            font = "IosevkaTermSlab Nerd Font:size=12";
+          };
         };
       };
 
