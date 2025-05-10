@@ -68,13 +68,19 @@ in
       wayland.windowManager.sway = {
         config = {
           output = {
-            eDP-1 = {
+            LVDS-1 = {
               resolution = "1280x800 position 0,0";
             };
           };
           input = {
             "*" = {
               xkb_layout = "gb";
+            };
+            "2:7:SynPS/2_Synaptics_TouchPad" = {
+              tap = "enabled";
+              dwt = "enabled";
+              natural_scroll = "enabled";
+              middle_emulation = "enabled";
             };
           };
         };
