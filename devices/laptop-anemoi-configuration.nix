@@ -22,15 +22,14 @@ in
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  # Filesystem
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/b7140590-32e6-435b-b0ee-79fdc0530900";
+    { device = "/dev/disk/by-uuid/c0f76681-aef9-4264-900a-f7d4d729f397";
       fsType = "btrfs";
-      options = [ "subvol=@" "compress=zstd" ];
+      options = [ "subvol=@" ];
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/10917183-a085-40cb-9b6e-bcaab8c39c82"; }
+    [ { device = "/dev/disk/by-uuid/1b5252ff-52ce-4e9a-8b45-f7393f28ee94"; }
     ];
 
   ### Networking
