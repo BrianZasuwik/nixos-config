@@ -11,52 +11,44 @@ in
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  # Bootloader
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # Bootloader.
+  boot.loader.grub.enable = true;
+  boot.loader.grub.device = "/dev/sda";
+  boot.loader.grub.useOSProber = true;
 
   # Kernel
-  boot.kernelPackages = pkgs.linuxPackages;
-  boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" "thinkpad_acpi" ];
+  boot.initrd.availableKernelModules = [ "ehci_pci" "ahci" "firewire_ohci" "usb_storage" "sd_mod" "sr_mod" "sdhci_pci" "thinkpad_acpi" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  hardware.xpadneo.enable = true;
-
-  # Filesystem
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/82d9a586-6ddb-48d3-922f-050de9a31c31";
-      fsType = "ext4";
-    };
-
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/EB17-9DEF";
-      fsType = "vfat";
-      options = [ "fmask=0077" "dmask=0077" ];
+    { device = "/dev/disk/by-uuid/c0f76681-aef9-4264-900a-f7d4d729f397";
+      fsType = "btrfs";
+      options = [ "subvol=@" ];
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/a1a88c26-0a34-4bf8-aae2-636edf897c2b"; }
+    [ { device = "/dev/disk/by-uuid/1b5252ff-52ce-4e9a-8b45-f7393f28ee94"; }
     ];
 
   ### Networking
-  # Define hostname
-  networking.hostName = "boreas";
+  networking.hostName = "anemoi"; # Define your hostname.
   # Bluetooth
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
   };
+  # Enable networking
+  networking.networkmanager.enable = true;
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp0s31f6.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlp0s20f3.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp0s25.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlp3s0.useDHCP = lib.mkDefault true;
 
-  # Platform
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
@@ -75,8 +67,8 @@ in
       wayland.windowManager.sway = {
         config = {
           output = {
-            eDP-1 = {
-              resolution = "1920x1080 position 0,0";
+            LVDS-1 = {
+              resolution = "1280x800 position 0,0";
             };
           };
           input = {
@@ -89,9 +81,6 @@ in
               natural_scroll = "enabled";
               middle_emulation = "enabled";
             };
-            "2:10:TPPS/2_Elan_TrackPoint" = {
-              accel_profile = "flat";
-            };
           };
         };
       };
@@ -100,25 +89,4 @@ in
 
   # Configure console keymap
   console.keyMap = "uk";
-
-  # Graphics Settings
-  services.xserver.videoDrivers = [ "nvidia" ];
-  
-  hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.latest;
-    modesetting.enable = true;
-    powerManagement.enable = true;
-    powerManagement.finegrained = true;
-    open = true;
-    nvidiaSettings = true;
-    # Nvidia PRIME for the dGPU
-    prime = {
-      offload = {
-        enable = true;
-        enableOffloadCmd = true;
-      };
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:1:0:0";
-    };
-  };
 }

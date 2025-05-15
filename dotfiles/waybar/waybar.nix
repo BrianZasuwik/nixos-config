@@ -20,7 +20,10 @@ in
           mainBar = {
             layer = "top";
             positon = "top";
-            height = 30;
+            height = 28;
+            margin-top = 5;
+            margin-left = 10;
+            margin-right = 10;
             modules-left = [ "clock" "sway/workspaces" "sway/mode" ];
             modules-center = [ "sway/window" ];
             modules-right = [ "pulseaudio" "backlight" "network" "bluetooth" "cpu" "memory" "battery" "tray" ];
@@ -103,12 +106,12 @@ in
               format = "󰘚 {usage}%";
               tooltip = true;
               interval = 1;
-              on-click = "kitty -e btop";
+              on-click = "foot btop";
             };
             "memory" = {
               format = "󰍛 {}%";
               interval = 1;
-              on-click = "kitty -e btop";
+              on-click = "foot btop";
             };
             "battery" = {
               states = {
@@ -129,7 +132,7 @@ in
               format-disconnected = "󰖪 ";
               format-alt = "{ifname}: {ipaddr}/{cidr}";
               tooltip-format = "{essid} ({signalStrength}%)\n{ifname}: {ipaddr}";
-              on-click-right = "kitty -e nmtui";
+              on-click-right = "foot nmtui";
             };
             "bluetooth" = {
               format = " ";
@@ -173,7 +176,7 @@ in
               interval = 30;
               format = "󰋊 {percentage_used}%";
               path = "/";
-              on-click = "kitty -e gdu /";
+              on-click = "foot gdu /";
             };
             "tray" = {
               icon-size = 18;
@@ -226,36 +229,34 @@ in
     font-size: 14px;
     min-height: 0;
 }
-
-window#waybar {
-    background-color: transparent;
-    color: ${colors.foreground};
+window.LVDS-1 * {
+    font-size: 12px;
 }
 
-/* Module Styling */
-.modules-right {
+window#waybar {
     background-color: ${colors.background};
-    padding: 1px 6px 0 6px;
-    margin: 2px 10px 0 0;
+    color: ${colors.foreground};
     border: 2px solid ${colors.border};
+}
+
+.modules-right {
+    background-color: transparent;
+    margin: 2px 6px;
 }
 .modules-center {
     background-color: transparent;
-    padding: 1px 6px 0 6px;
-    margin: 2px 0 0;
+    margin: 2px 6px;
 }
 .modules-left {
-    background-color: ${colors.background};
-    padding: 1px 6px 0 6px;
-    margin: 2px 0 0 10px;
-    border: 2px solid ${colors.border};
+    background-color: transparent;
+    margin: 2px 6px;
 }
 
 /* Common module styling with border-top */
 #mode, #mpd, #custom-weather, #custom-playerctl, #clock, #cpu,
 #memory, #temperature, #battery, #network, #pulseaudio,
 #backlight, #disk, #custom-uptime, #custom-updates, #custom-quote,
-#idle_inhibitor, #tray, #bluetooth {
+#idle_inhibitor, #tray, #bluetooth, window#waybar #window {
     border-radius: 0px;
     padding: 0 10px;
     margin: 3px 2px;
@@ -440,6 +441,18 @@ window#waybar {
 #idle_inhibitor.activated {
     color: @idle-inhibitor-active-color;
     border-top-color: @idle-inhibitor-active-color;
+}
+
+window#waybar #window {
+    color: ${colors.white};
+    border-top-color: ${colors.white};
+}
+
+window#waybar.empty #window {
+    color: transparent;
+    border-top-color: transparent;
+    padding: 0px;
+    margin: 0px;
 }
 
 #tray {

@@ -8,8 +8,9 @@ let
   wallpaper = "M31_IRAC-MIPS.jpg";
 
   # Sway basic apps
-  terminal = "kitty";
+  terminal = "foot";
   menu = "wofi --allow-images --show=drun | xargs swaymsg exec --";
+  exit-command = "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'";
 in
 {
   # Window Manager install on system level, configured by home-manager.
@@ -198,7 +199,8 @@ in
               # ¯\_(ツ)_/¯
 
             # Exit sway
-            "${profile.modifier}+Shift+e" = "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'";
+            "${profile.modifier}+Shift+e" = "${exit-command}";
+            XF86ScreenSaver = "${exit-command}";
 
             ### Moving around
             # Moving your focus around
@@ -254,6 +256,7 @@ in
             "${profile.modifier}+e" = "layout toggle split";
             # Make current window fullscreen
             "${profile.modifier}+f" = "fullscreen";
+            XF86FullScreen = "fullscreen";
             # Toggle floating for current window
             "${profile.modifier}+Shift+space" = "floating toggle";
             # Swap focus between tiling area and floating area
