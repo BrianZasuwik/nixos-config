@@ -270,6 +270,7 @@ alias sway='sway --unsupported-gpu'
     xdg-user-dirs
     xdg-user-dirs-gtk
     nemo-with-extensions
+    yt-dlp
   ];
 
   virtualisation.virtualbox = {
